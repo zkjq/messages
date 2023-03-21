@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>留言板</title>
+</head>
+<body>
+    <h1>欢迎来到留言板</h1>
+    <form action="" method="post">
+        <label for="username">用户名：</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="message">留言内容：</label><br>
+        <textarea id="message" name="message" rows="5" cols="50" required></textarea><br><br>
+        <input type="submit" value="提交">
+    </form>
+    <?php
+    if(isset($_POST['username']) && isset($_POST['message'])) {
+        $username = $_POST['username'];
+        $message = $_POST['message'];
+        $filename = 'messages.txt';
+        $data = $username . '：' . $message . "\n";
+        file_put_contents($filename, $data, FILE_APPEND);
+        echo '<p>留言成功！</p>';
+    }
+    ?>
+    <hr>
+    <h2>留言列表</h2>
+    <?php
+    $filename = 'messages.txt';
+    if(file_exists($filename)) {
+        $messages = file($filename);
+        foreach($messages as $message) {
+            echo '<p>' . $message . '</p>';
+        }
+    } else {
+        echo '<p>暂无留言</p>';
+    }
+    ?>
+</body>
+</html>
